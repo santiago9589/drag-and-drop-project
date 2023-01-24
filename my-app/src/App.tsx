@@ -32,9 +32,18 @@ function App() {
     const arrayToOrder = draft.get(destination.droppableId)
     const arrayToDelete = draft.get(source.droppableId)
 
-    const [newOrder] = Array.from(arrayToDelete!).splice(source.index, 1)
+    const pastArray = Array.from(arrayToDelete!)
+    const recivedArray = Array.from(arrayToOrder!)
+
+    console.log(pastArray)
+    const [newOrder] = pastArray.splice(source.index, 1)
+    console.log(newOrder)
     arrayToDelete?.delete(newOrder)
-    arrayToOrder?.add(newOrder)
+
+    recivedArray.splice(destination.index, 0,newOrder)
+    const setUpdate = new Set(recivedArray)
+    draft.delete(destination.droppableId)
+    draft.set(destination.droppableId,setUpdate)
 
     setState(draft)
   }
