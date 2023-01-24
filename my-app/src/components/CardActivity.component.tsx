@@ -7,8 +7,8 @@ interface props{
 
 const CardActivity = ({name}:props) => {
   return (
-    <article className='bg-white w-full rounded-lg p-2 my-1 box-border'>
-        <h2 className='text-lg capitalize'>{name}</h2>
+    <article className='card-activity'>
+        <h2 className='card-activity-text'>{name}</h2>
     </article>
   )
 }

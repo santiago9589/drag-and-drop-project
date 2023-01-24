@@ -7,3 +7,24 @@
         @apply bg-hero-pattern
     }
 }
+
+@layer components{
+    .card-activity{
+        @apply bg-white w-full rounded-lg p-2 my-1 box-border
+    }
+    .card-activity-text{
+        @apply text-lg capitalize
+    }
+
+    .card-container{
+        @apply relative flex flex-col min-w-[250px] h-1/3 border-2 border-slate-300 rounded-lg shadow-lg shadow-slate-400 bg-slate-100 p-2 box-border
+    }
+
+    .card-header{
+        @apply flex items-center justify-between 
+    }
+
+    .card-bottom{
+        @apply absolute bottom-0 left-0 m-2 flex space-x-1
+    }
+}
