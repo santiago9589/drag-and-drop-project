@@ -1,8 +1,12 @@
 import React from 'react'
 import logo from "/trello-ar21.svg"
 
+interface props{
+    isShowCreate:boolean
+    setisShowCreate:React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const NavbarComponent = () => {
+const NavbarComponent = ({isShowCreate,setisShowCreate}:props) => {
     return (
         <nav className='flex items-center bg-slate-100 justify-between p-1'>
             <section className='flex items-center space-x-3'>
@@ -23,7 +27,9 @@ const NavbarComponent = () => {
                     <select className="bg-slate-100" name='Planillas'>
                         <option value="Planillas">Planillas</option>
                     </select>
-                    <button className='bg-slate-300 p-2 rounded-md'>Crear</button>
+                    <button onClick={()=>{
+                        setisShowCreate(true)
+                    }} className='bg-slate-300 p-2 rounded-md'>Crear</button>
                 </section>
             </section>
             <section className='flex items-center space-x-2'>

@@ -15,7 +15,9 @@ function App() {
 
   const [state, setState] = useState(rowsContent)
   const [isShow, setisShow] = useState<boolean>(false)
+  const [isShowCreate, setisShowCreate] = useState<boolean>(false)
   const [newInput, setnewInput] = useState<string>("")
+  const [newInputState, setnewInputState] = useState<string>("")
   const [taskContainer, setTaskContainer] = useState<string>("")
 
   const onDragEnd = (result: DropResult) => {
@@ -45,7 +47,6 @@ function App() {
 
     recivedArray.splice(destination.index, 0, newOrder)
     const setUpdate = new Set(recivedArray)
-    draft.delete(destination.droppableId)
     draft.set(destination.droppableId, setUpdate)
 
     setState(draft)
@@ -54,9 +55,9 @@ function App() {
   useEffect(() => {
 
     const draft = structuredClone(state)
-    draft.set('task-0', new Set(["limpiar", "bailar", "comer", "fdfsd", "dfsdfs"]))
-    draft.set('task-1', new Set(["salir"]))
-    draft.set('task-2', new Set(["dormir"]))
+    draft.set('List', new Set(["limpiar", "bailar", "comer", "fdfsd", "dfsdfs"]))
+    draft.set('Pending', new Set(["salir"]))
+    draft.set('Done', new Set(["dormir"]))
     setState(draft)
   }, [])
 
@@ -64,6 +65,11 @@ function App() {
   const handleChange = (value: string) => {
     setnewInput(value)
   }
+
+  const handleChangeCreate = (value: string) => {
+    setnewInputState(value)
+  }
+
 
   const handleCreate = (inputValue: string, droppableId: string) => {
     if (!newInput || !droppableId) return
@@ -81,18 +87,50 @@ function App() {
     setTaskContainer(droppableId)
   }
 
-  return (
-    <main className="container mx-auto box-border h-[800px]">
-      <NavbarComponent />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex h-[900px] gap-3  border-2 rounded-lg shadow-slate-200 shadow-lg overflow-x-auto p-2">
-          {
-            Array.from({ length: Array.from(state.keys()).length }, (_, i) => {
+  const handleAddCard = (name: string) => {
+    if (!name) return
+    const draft = structuredClone(state)
+    const cardToCreate = draft.set(name, new Set([]))
+    console.log(cardToCreate)
+    setnewInput("")
+    setisShowCreate(false)
+    setState(draft)
+  }
 
-              const taskArray = state.get(`task-${i}`)
+
+
+  return (
+    <main className="container mx-auto box-border h-screen">
+      <NavbarComponent isShowCreate={isShowCreate} setisShowCreate={setisShowCreate} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="flex h-[630px] gap-3  border-2 rounded-lg shadow-slate-200 shadow-lg overflow-x-auto p-2">
+          {
+            isShowCreate ?
+              (<section className="absolute bottom-0 left-0 w-full h-full z-10 flex justify-center items-center">
+                <section className="absolute flex flex-col w-1/3 p-2 space-y-2 bg-white z-30 rounded-lg border-2 border-slate-300">
+                  <label className="text-xl capitalize">Nueva Estado</label>
+                  <input
+                    type="text"
+                    placeholder="nueva tarjeta"
+                    onChange={(e) => handleChangeCreate(e.target.value)}
+                    value={newInputState}
+                    className="p-2 bg-slate-100 rounded-lg"
+                  />
+                  <button className="bg-green-200 border-2 text-lg rounded-lg p-1" onClick={() => handleAddCard(newInputState)}>Añadir</button>
+                </section>
+                <b className="absolute  bg-black opacity-30  bottom-0 left-0 w-full h-full" />
+
+              </section>)
+
+              : (null)
+          }
+          {
+            Array.from(state.keys()).map((key, i) => {
+
+              const taskArray = state.get(key)
 
               return (
-                <Droppable droppableId={`task-${i}`} key={`task-${i}`}>
+                <Droppable droppableId={key} key={key}>
                   {
                     (provided) => (
                       <div
@@ -112,7 +150,7 @@ function App() {
                                   value={newInput}
                                   className="p-2 bg-slate-100 rounded-lg"
                                 />
-                                <button className="bg-green-200 border-2 text-lg rounded-lg p-1"onClick={() => handleCreate(newInput, taskContainer)}>Añadir</button>
+                                <button className="bg-green-200 border-2 text-lg rounded-lg p-1" onClick={() => handleCreate(newInput, taskContainer)}>Añadir</button>
                               </section>
                               <b className="absolute  bg-black opacity-30  bottom-0 left-0 w-full h-full" />
 
@@ -121,12 +159,12 @@ function App() {
                             : (null)
                         }
                         <header className="card-header">
-                          <h2 className='text-xl capitalize font-semibold'>{"ramdom-ramdom"}</h2>
+                          <h2 className='text-xl capitalize font-semibold py-2'>{key}</h2>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                           </svg>
                         </header>
-                        <article className='overflow-y-auto h-[200px]'>
+                        <article className='overflow-y-auto h-[300px]'>
                           {
                             Array.from(taskArray!).map((task: string, index) => {
                               return (
@@ -149,8 +187,8 @@ function App() {
                           }
                           {provided.placeholder}
                         </article>
-                        <section className='absolute bottom-5 left-5 flex' onClick={() => {
-                          handleStartAdd(`task-${i}`)
+                        <section className='flex' onClick={() => {
+                          handleStartAdd(key)
                         }}>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
