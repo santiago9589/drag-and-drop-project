@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useContext } from "react"
 import NavbarComponent from "./components/NavbarComponent"
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd"
+import { DragDropContext, Droppable} from "react-beautiful-dnd"
 import CardContainer from "./pages/home/components/home.cardContainer"
 import CardNewContainer from "./pages/home/components/home.cardnewContainer"
-import { useShow } from "./hooks/useShow"
-import { useData } from "./hooks/useData"
-import { useText } from "./hooks/useText"
+import { AppContext } from "./context/context"
 
 const getItemStyle = (isDraggeble: boolean, draggableStyle: any) => ({
   background: isDraggeble ? "green" : "white",
@@ -14,57 +12,25 @@ const getItemStyle = (isDraggeble: boolean, draggableStyle: any) => ({
 
 function App() {
 
-  const {state,setState,onDragEnd} = useData()
-  const [isShow, setisShow] = useShow()
-  const [isShowCreate, setisShowCreate] = useShow()
-  const [newCard, handleNewCard] = useText()
-  const [newContainer, handleNewContainer] = useText()
-  const [taskContainer, handleTaskContainer] = useText()
 
-
-  const handleCreate = (inputValue: string, droppableId: string) => {
-    if (!newCard || !droppableId) return
-    const draft = structuredClone(state)
-    const arrayToUpdate = draft.get(droppableId)
-    arrayToUpdate?.add(inputValue)
-    setState(draft)
-    setisShow(false)
-    handleNewCard("")
-  }
-
-  const handleStartAdd = (droppableId: string) => {
-    if (!droppableId) return
-    setisShow(true)
-    handleTaskContainer(droppableId)
-  }
-
-  const handleAddCard = (name: string) => {
-    if (!name) return
-    const draft = structuredClone(state)
-    const cardToCreate = draft.set(name, new Set([]))
-    handleNewContainer("")
-    setisShowCreate(false)
-    setState(draft)
-  }
-
-
-
+  const {state,dispatch} = useContext(AppContext)
+  
   return (
     <main className="container mx-auto box-border h-screen">
-      <NavbarComponent isShowCreate={isShowCreate} setisShowCreate={setisShowCreate} />
-      <DragDropContext onDragEnd={onDragEnd}>
+      <NavbarComponent isShowCreate={state.isShowCreate} setisShowCreate={dispatch.setisShowCreate} />
+      <DragDropContext onDragEnd={dispatch.onDragEnd}>
         <div className="flex h-[630px] gap-3  border-2 rounded-lg shadow-slate-200 shadow-lg overflow-x-auto p-2">
           {
-            isShowCreate ?
+            state.isShowCreate ?
               (
-                <CardNewContainer handleAddCard={handleAddCard} handleChangeCreate={handleNewContainer} newInputState={newContainer} />
+                <CardNewContainer handleAddCard={dispatch.handleAddCard} handleChangeCreate={dispatch.handleNewContainer} newInputState={state.newContainer} />
               )
               : (null)
           }
           {
-            Array.from(state.keys()).map((key, i) => {
+            Array.from(state.state.keys()).map((key, i) => {
 
-              const taskArray = state.get(key)
+              const taskArray = state.state.get(key)
 
               return (
                 <Droppable droppableId={key} key={key}>
@@ -72,14 +38,14 @@ function App() {
                     (provided) => (
                       <CardContainer
                         provided={provided}
-                        isShow={isShow}
-                        handleChange={handleNewCard}
-                        newInput={newCard}
-                        handleCreate={handleCreate}
-                        taskContainer={taskContainer}
+                        isShow={state.isShow}
+                        handleChange={dispatch.handleNewCard}
+                        newInput={state.newCard}
+                        handleCreate={dispatch.handleCreate}
+                        taskContainer={state.taskContainer}
                         name={key}
                         taskArray={taskArray}
-                        handleStartAdd={handleStartAdd}
+                        handleStartAdd={dispatch.handleStartAdd}
                         getItemStyle={getItemStyle}
                       />
                     )

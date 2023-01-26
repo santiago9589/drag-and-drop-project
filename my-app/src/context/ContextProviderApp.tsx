@@ -43,13 +43,24 @@ const ProviderApp = ({ children }: props) => {
 
 
     const context: contextProps = {
-        state: state,
+        state:{
+            state,
+            newCard,
+            isShow,
+            isShowCreate,
+            newContainer,
+            taskContainer
+        },
 
         dispatch: {
             handleCreate,
             handleStartAdd,
             handleAddCard,
-            onDragEnd
+            onDragEnd,
+            setisShowCreate,
+            handleNewCard,
+            handleNewContainer,
+            handleTaskContainer
         }
     }
 
