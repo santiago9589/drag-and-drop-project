@@ -1,5 +1,6 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { DroppableProvided,Draggable} from "react-beautiful-dnd"
+import { AppContext } from '../../../context/context'
 import CardComponent from './home.cardComponent'
 import CardFooter from './home.cardFooter'
 import CardHeader from './home.cardHeader'
@@ -7,18 +8,14 @@ import CardNewComponent from './home.cardNewComponent'
 
 interface props{
     provided: DroppableProvided
-    isShow:boolean
-    handleChange:(value:string)=>void
-    newInput:string
-    handleCreate:(newInput:string,taskContainer:string)=>void
-    taskContainer:string
     name:string
     taskArray:Set<string> | undefined
-    handleStartAdd: (name: string) => void
-    getItemStyle: (isDraggeble: boolean, draggableStyle: any) => any
 }
 
-const CardContainer = ({provided,isShow,handleChange,newInput,handleCreate,handleStartAdd,taskContainer,name,taskArray,getItemStyle}:props) => {
+const CardContainer = ({provided,name,taskArray}:props) => {
+
+  const {state} = useContext(AppContext)
+
     return (
         <div
         {...provided.droppableProps}
@@ -26,9 +23,9 @@ const CardContainer = ({provided,isShow,handleChange,newInput,handleCreate,handl
         className='card-container'
       >
         {
-          isShow && provided.droppableProps["data-rbd-droppable-id"] === taskContainer ?
+          state.isShow && provided.droppableProps["data-rbd-droppable-id"] === state.taskContainer ?
             (
-              <CardNewComponent handleChange={handleChange} newInput={newInput} taskContainer={taskContainer} handleCreate={handleCreate} />)
+              <CardNewComponent />)
             : (null)
         }
         <CardHeader title={name} />
@@ -38,7 +35,7 @@ const CardContainer = ({provided,isShow,handleChange,newInput,handleCreate,handl
               return (
                 <Draggable key={index} draggableId={`taskN-${task}`} index={index}>
                   {(provided, snapshot) => (
-                    <CardComponent provided={provided} snapshot={snapshot} task={task} getItemStyle={getItemStyle} />
+                    <CardComponent provided={provided} snapshot={snapshot} task={task}/>
                   )}
                 </Draggable>
               )
@@ -46,7 +43,7 @@ const CardContainer = ({provided,isShow,handleChange,newInput,handleCreate,handl
           }
           {provided.placeholder}
         </article>
-        <CardFooter name={name} handleStartAdd={handleStartAdd} />
+        <CardFooter name={name} />
       </div>
     )
 }

@@ -4,11 +4,16 @@ import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd"
 interface props {
     provided: DraggableProvided
     snapshot: DraggableStateSnapshot
-    getItemStyle: (isDraggeble: boolean, draggableStyle: any) => any
     task: string
 }
 
-const CardComponent = ({ provided, snapshot, getItemStyle, task }: props) => {
+const CardComponent = ({ provided, snapshot, task }: props) => {
+
+    const getItemStyle = (isDraggeble: boolean, draggableStyle: any) => ({
+        background: isDraggeble ? "green" : "white",
+        ...draggableStyle
+      })
+
     return (
         <div
             {...provided.draggableProps}

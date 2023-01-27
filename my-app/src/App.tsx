@@ -1,20 +1,17 @@
 import React, { useContext } from "react"
 import NavbarComponent from "./components/NavbarComponent"
-import { DragDropContext, Droppable} from "react-beautiful-dnd"
+import { DragDropContext, Droppable } from "react-beautiful-dnd"
 import CardContainer from "./pages/home/components/home.cardContainer"
 import CardNewContainer from "./pages/home/components/home.cardnewContainer"
 import { AppContext } from "./context/context"
 
-const getItemStyle = (isDraggeble: boolean, draggableStyle: any) => ({
-  background: isDraggeble ? "green" : "white",
-  ...draggableStyle
-})
+
 
 function App() {
 
 
-  const {state,dispatch} = useContext(AppContext)
-  
+  const { state, dispatch } = useContext(AppContext)
+
   return (
     <main className="container mx-auto box-border h-screen">
       <NavbarComponent isShowCreate={state.isShowCreate} setisShowCreate={dispatch.setisShowCreate} />
@@ -23,7 +20,7 @@ function App() {
           {
             state.isShowCreate ?
               (
-                <CardNewContainer handleAddCard={dispatch.handleAddCard} handleChangeCreate={dispatch.handleNewContainer} newInputState={state.newContainer} />
+                <CardNewContainer />
               )
               : (null)
           }
@@ -38,15 +35,8 @@ function App() {
                     (provided) => (
                       <CardContainer
                         provided={provided}
-                        isShow={state.isShow}
-                        handleChange={dispatch.handleNewCard}
-                        newInput={state.newCard}
-                        handleCreate={dispatch.handleCreate}
-                        taskContainer={state.taskContainer}
                         name={key}
                         taskArray={taskArray}
-                        handleStartAdd={dispatch.handleStartAdd}
-                        getItemStyle={getItemStyle}
                       />
                     )
                   }
