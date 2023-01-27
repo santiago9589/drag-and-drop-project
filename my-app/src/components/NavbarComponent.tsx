@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from '../context/context'
 import logo from "/trello-ar21.svg"
 
-interface props{
-    isShowCreate:boolean
-    setisShowCreate:React.Dispatch<React.SetStateAction<boolean>>
-}
 
-const NavbarComponent = ({isShowCreate,setisShowCreate}:props) => {
+
+const NavbarComponent = () => {
+
+    const { dispatch } = useContext(AppContext)
+
+
     return (
         <nav className='flex items-center bg-slate-100 justify-between p-1'>
             <section className='flex items-center space-x-3'>
@@ -28,7 +30,7 @@ const NavbarComponent = ({isShowCreate,setisShowCreate}:props) => {
                         <option value="Planillas">Planillas</option>
                     </select>
                     <button onClick={()=>{
-                        setisShowCreate(true)
+                        dispatch.setisShowCreate(true)
                     }} className='bg-slate-300 p-2 rounded-md'>Crear</button>
                 </section>
             </section>

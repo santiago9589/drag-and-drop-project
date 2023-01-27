@@ -10,7 +10,7 @@ const CardNewContainer = () => {
     return (
         <section className="absolute bottom-0 left-0 w-full h-full z-10 flex justify-center items-center">
             <section className="absolute flex flex-col w-1/3 p-2 space-y-2 bg-white z-30 rounded-lg border-2 border-slate-300">
-                <label className="text-xl capitalize">Nueva Estado</label>
+                <label className="text-xl capitalize">Nueva Tarea</label>
                 <input
                     type="text"
                     placeholder="nueva tarjeta"
