@@ -8,7 +8,7 @@ const CardNewContainer = () => {
     const {state,dispatch} = useContext(AppContext)
 
     return (
-        <section className="absolute bottom-0 left-0 w-full h-full z-10 flex justify-center items-center">
+        <form className="absolute bottom-0 left-0 w-full h-full z-10 flex justify-center items-center">
             <section className="absolute flex flex-col w-1/3 p-2 space-y-2 bg-white z-30 rounded-lg border-2 border-slate-300">
                 <label className="text-xl capitalize">Nueva Tarea</label>
                 <input
@@ -22,7 +22,7 @@ const CardNewContainer = () => {
             </section>
             <b className="absolute  bg-black opacity-30  bottom-0 left-0 w-full h-full" />
 
-        </section>
+        </form>
 
     )
 }

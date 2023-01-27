@@ -7,7 +7,7 @@ const CardNewComponent = () => {
     const {state,dispatch} = useContext(AppContext)
 
     return (
-        <section className="absolute bottom-0 left-0 w-full h-full">
+        <form className="absolute bottom-0 left-0 w-full h-full">
             <section className="absolute flex flex-col w-full p-2 space-y-2 bg-white z-30 rounded-lg border-2 border-slate-300">
                 <label className="text-xl capitalize">Nueva tarjeta</label>
                 <input
@@ -21,7 +21,7 @@ const CardNewComponent = () => {
             </section>
             <b className="absolute  bg-black opacity-30  bottom-0 left-0 w-full h-full" />
 
-        </section>
+        </form>
     )
 }
 
