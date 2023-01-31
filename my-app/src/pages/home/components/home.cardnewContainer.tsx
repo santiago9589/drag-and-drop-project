@@ -1,24 +1,28 @@
-import React,{useContext} from 'react'
+import React, { useContext } from 'react'
+import ButtonForm from '../../../components/Form/button.form'
+import InputForm from '../../../components/Form/Input.form'
 import { AppContext } from '../../../context/context'
 
 
 
 const CardNewContainer = () => {
 
-    const {state,dispatch} = useContext(AppContext)
+    const { state, dispatch } = useContext(AppContext)
 
     return (
         <form className="absolute bottom-0 left-0 w-full h-full z-10 flex justify-center items-center">
             <section className="absolute flex flex-col w-1/3 p-2 space-y-2 bg-white z-30 rounded-lg border-2 border-slate-300">
-                <label className="text-xl capitalize">Nueva Tarea</label>
-                <input
+                <InputForm
                     type="text"
+                    name="tarjeta"
                     placeholder="nueva tarjeta"
                     onChange={(e) => dispatch.handleNewContainer(e.target.value)}
                     value={state.newContainer}
-                    className="p-2 bg-slate-100 rounded-lg"
                 />
-                <button className="bg-green-200 border-2 text-lg rounded-lg p-1" onClick={() => dispatch.handleAddCard(state.newContainer)}>Añadir</button>
+                <ButtonForm type='button' name='añadir' onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.preventDefault()
+                    dispatch.handleAddCard(state.newContainer)
+                }}/>
             </section>
             <b className="absolute  bg-black opacity-30  bottom-0 left-0 w-full h-full" />
 

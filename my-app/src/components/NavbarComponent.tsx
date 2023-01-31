@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
+import { apiAuth } from '../../api/auth'
 import { AppContext } from '../context/context'
+import { AuthContext } from '../context/contextAuth'
 import logo from "/trello-ar21.svg"
-
-
 
 const NavbarComponent = () => {
 
     const { dispatch } = useContext(AppContext)
+    const  stateAuth  = useContext(AuthContext)
 
 
     return (
@@ -29,10 +30,15 @@ const NavbarComponent = () => {
                     <select className="bg-slate-100" name='Planillas'>
                         <option value="Planillas">Planillas</option>
                     </select>
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         dispatch.setisShowCreate(true)
                     }} className='bg-slate-300 p-2 rounded-md'>Crear</button>
+                    <button onClick={async() => {
+                        await apiAuth.logout()
+                        stateAuth.dispatch.logoutUser()
+                    }} className='bg-blue-300 p-2 rounded-md'>Salir</button>
                 </section>
+                
             </section>
             <section className='flex items-center space-x-2'>
                 <input

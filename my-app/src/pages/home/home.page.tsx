@@ -5,10 +5,11 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd"
 import CardNewContainer from "./components/home.cardnewContainer"
 import CardContainer from "./components/home.cardContainer"
 
+
 const HomePage = () => {
 
   const { state, dispatch } = useContext(AppContext)
-
+  
   return (
     <>
     <NavbarComponent/>

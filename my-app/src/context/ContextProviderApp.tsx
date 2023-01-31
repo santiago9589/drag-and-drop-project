@@ -26,6 +26,7 @@ const ProviderApp = ({ children }: props) => {
         handleNewCard("")
     }
 
+
     const handleStartAdd = (droppableId: string) => {
         if (!droppableId) return
         setisShow(true)
